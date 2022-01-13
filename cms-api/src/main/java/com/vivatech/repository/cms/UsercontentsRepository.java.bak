@@ -1,0 +1,22 @@
+package com.vivatech.repository;
+
+import java.util.List;
+
+// import com.vivatech.model.Contenttypes;
+// import com.vivatech.model.Location;
+// import com.vivatech.model.User;
+// import com.vivatech.model.Languages;
+import com.vivatech.model.Usercontents;
+
+import org.springframework.data.repository.CrudRepository;
+
+// import com.vivatech.User;
+
+// This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
+// CRUD refers Create, Read, Update, Delete
+
+public interface UsercontentsRepository extends CrudRepository<Usercontents, Integer> {
+
+  List<Usercontents> findByUserid(String userid);
+
+}

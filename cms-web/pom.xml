@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.vivatech.cms</groupId>
+    <artifactId>cms-web</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>cms-web</name>
+    <description>CRBT CMS WEB</description>
+
+    <parent>
+		<groupId>com.vivatech</groupId>
+		<artifactId>common</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	<!-- lookup parent from repository -->
+    </parent>
+
+    <dependencies>
+	
+    </dependencies>    
+
+
+    <build>
+        <plugins>
+		<plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+         </plugin>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.6</version>
+				<configuration>
+						<nodeVersion>v12.18.2</nodeVersion>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install-npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+					</execution>
+					  <execution>
+						  <id>npm-install</id>
+						  <goals>
+							  <goal>npm</goal>
+						  </goals>
+					  </execution>
+					  <execution>
+						  <id>npm-build</id>
+						  <goals>
+							  <goal>npm</goal>
+						  </goals>
+						  <configuration>
+							  <arguments>run-script build</arguments>
+						  </configuration>
+					  </execution>
+				  </executions>
+			</plugin>
+		</plugins>	
+    </build>
+
+</project>

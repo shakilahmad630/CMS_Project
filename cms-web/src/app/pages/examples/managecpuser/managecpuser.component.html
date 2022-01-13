@@ -1,0 +1,432 @@
+<div class="container my-5">
+
+    <div class="card card-register">
+        <div class="card-header py-0">
+            <img alt="Card image" class="card-img" src="assets/img/square1-red.png" style="width: 260px; " />
+            <span class="card-title" style="font-size: 2em;">Manage User</span>
+        </div>
+        <div class="card-body">
+
+            <div class="modal-body">
+                <form #adduserform="ngForm" [formGroup]="userForm">
+
+                    <div class="form-row ">
+                        <div class="form-group col-6">
+                            <label for="inputState">Login ID</label>
+                            <div class="input-group input-group-alternative"
+                                [ngClass]="{ 'input-group-focus': focus1 === true }">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="tim-icons icon-email-85"> </i>
+                                    </span>
+                                </div>
+                                <input class="form-control myformcontrol" placeholder="Login Id" type="text" (focus)="focus1 = true"
+                                    (blur)="focus1 = false" id="username" name="username" formControlName="username" />
+                            </div>
+                            <div class="alert alert-danger"
+                                *ngIf="username && username.errors && username.errors.required  && (username.dirty || username.touched)">
+                                Username is required</div>
+                            <div class="alert alert-danger"
+                                *ngIf="username && username.errors && username.errors.minlength && (username.dirty || username.touched)">
+                                Username must be at least 3 characters</div>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="inputState">Email ID</label>
+                            <div class="input-group input-group-alternative"
+                                [ngClass]="{ 'input-group-focus': focus7 === true }">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="tim-icons icon-email-85"> </i>
+                                    </span>
+                                </div>
+                                <input class="form-control myformcontrol" placeholder="Email Id" type="email" (focus)="focus7 = true"
+                                    (blur)="focus7 = false" id="email" name="email" formControlName="email" />
+                            </div>
+                            <div class="alert alert-danger"
+                                *ngIf="email && email.errors && email.errors.required && (email.dirty || email.touched)">
+                                Email is required</div>
+                            <div class="alert alert-danger"
+                                *ngIf="email && email.errors && email.errors.email && (email.dirty || email.touched)">
+                                Email must be a valid email address</div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-row ">
+
+                        <div class="form-group col-6">
+                            <label for="inputState">Password</label>
+                            <div class="input-group input-group-alternative"
+                                [ngClass]="{ 'input-group-focus': focus2 === true }">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="tim-icons icon-key-25"> </i>
+                                    </span>
+                                </div>
+                                <input class="form-control myformcontrol" placeholder="Password" type="password"
+                                    (focus)="focus2 = true" (blur)="focus2 = false" id="password" name="password"
+                                    formControlName="password" />
+                            </div>
+                            <div class="alert alert-danger"
+                                *ngIf="password && password.errors && password.errors.required && (password.dirty || password.touched)">
+                                Password is required</div>
+                            <div class="alert alert-danger"
+                                *ngIf="password && password.errors && password.errors.minlength && (password.dirty || password.touched)">
+                                Password must be at least 6 characters</div>
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="inputState">Retype Password</label>
+                            <div class="input-group input-group-alternative"
+                                [ngClass]="{ 'input-group-focus': focus3 === true }">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="tim-icons icon-key-25"> </i>
+                                    </span>
+                                </div>
+                                <input class="form-control myformcontrol" placeholder="Retype Password" type="password"
+                                    (focus)="focus3 = true" (blur)="focus3 = false" id="repassword" name="repassword"
+                                    formControlName="repassword" />
+                            </div>
+                            <div class="alert alert-danger"
+                                *ngIf="repassword && repassword.errors && repassword.errors.required && (repassword.dirty || repassword.touched)">
+                                Confirm Password is required</div>
+                            <div class="alert alert-danger"
+                                *ngIf="repassword && repassword.errors && repassword.errors.mustMatch && (repassword.dirty || repassword.touched)">
+                                Passwords must match</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label for="inputState">Name</label>
+                            <div class="input-group input-group-alternative"
+                                [ngClass]="{ 'input-group-focus': focus5 === true }">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-home"> </i>
+                                    </span>
+                                </div>
+                                <input class="form-control myformcontrol" placeholder="Name" type="text" (focus)="focus5 = true"
+                                    (blur)="focus5 = false" id="firstname" name="firstname"
+                                    formControlName="firstname" />
+                            </div>
+                            <div class="alert alert-danger"
+                                *ngIf="firstname && firstname.invalid && (firstname.dirty || firstname.touched)">
+                                Firstname is required</div>
+                        </div>
+
+                        <div class="form-group col-6">
+                            <label for="inputState">Contact Number</label>
+                            <div class="input-group input-group-alternative"
+                                [ngClass]="{ 'input-group-focus': focus6 === true }">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="tim-icons icon-key-25"> </i>
+                                    </span>
+                                </div>
+                                <input class="form-control myformcontrol" placeholder="Contact Number" type="tel"
+                                    pattern="[1-9]{1}[0-9]{9}" (focus)="focus6 = true" (blur)="focus6 = false"
+                                    id="phonenumber" name="phonenumber" formControlName="phonenumber" />
+                            </div>
+                            <div class="alert alert-danger"
+                                *ngIf="phonenumber && phonenumber.invalid && (phonenumber.dirty || phonenumber.touched)">
+                                Phone Number is required</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label for="inputState">Status</label>
+                            <select id="inputState" class="form-control  myformcontrol" id="status" name="status"
+                                formControlName="status">
+                                <div class="alert alert-danger"
+                                    *ngIf="status && status.invalid && (status.dirty || status.touched)">Status is
+                                    required</div>
+                                <option>Active</option>
+                                <option>Inactive</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-6">
+                            <label for="inputStaterole">Role</label>
+                            <select id="inputStaterole" class="form-control  myformcontrol" id="rolename"
+                                name="rolename" formControlName="rolename">
+                                <div class="alert alert-danger"
+                                    *ngIf="rolename && rolename.invalid && (rolename.dirty || rolename.touched)">Role
+                                    Name is required</div>
+                                <option *ngFor="let role of roles">{{role}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <a class="btn btn-primary btn-round" href="javascript:void(0)" (click)="onSubmit()">
+                            Add
+                        </a>
+                        <a class="btn btn-primary btn-round" href="javascript:void(0)" (click)="setDefaultValues()">
+                            Reset
+                        </a>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--  -->
+    <!--  -->
+    <form>
+        <div class="form-group form-inline">
+            Full text search: <input class="form-control ml-2" type="text" name="searchTerm"
+                [(ngModel)]="service.searchTerm" />
+            <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <!-- <th scope="col">#</th> -->
+                    <th scope="col" sortable="username" (sort)="onSort($event)">Login ID</th>
+                    <th scope="col" sortable="status" (sort)="onSort($event)">Status</th>
+                    <th scope="col" sortable="firstname" (sort)="onSort($event)">Name</th>
+                    <th scope="col" sortable="phonenumber" (sort)="onSort($event)">Contact No</th>
+                    <th scope="col" sortable="email" (sort)="onSort($event)">Email ID</th>
+                    <th scope="col">Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users$ | async">
+                    <!-- <th scope="row">{{ user.id }}</th> -->
+                    <td>
+                        <ngb-highlight [result]="user.username" [term]="service.searchTerm"></ngb-highlight>
+                    </td>
+                    <td>
+                        <ngb-highlight [result]="user.status" [term]="service.searchTerm"></ngb-highlight>
+                    </td>
+                    <td>
+                        <ngb-highlight [result]="user.firstname" [term]="service.searchTerm"></ngb-highlight>
+                    </td>
+                    <td>
+                        <ngb-highlight [result]="user.phonenumber" [term]="service.searchTerm"></ngb-highlight>
+                    </td>
+                    <td>
+                        <ngb-highlight [result]="user.email" [term]="service.searchTerm"></ngb-highlight>
+                    </td>
+                    <td class="td-actions text-center">
+                        <button type="button" rel="tooltip" class="btn btn-info btn-sm btn-icon" (click)="onEdit(user)">
+                            <i class="tim-icons icon-settings-gear-63"></i>
+                        </button>
+
+                        <button type="button" rel="tooltip" class="btn btn-primary btn-sm btn-icon"
+                            (click)="showdialog(user)">
+                            <i class="tim-icons icon-simple-remove"></i>
+                        </button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between p-2">
+            <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+            </ngb-pagination>
+
+            <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+                <option [ngValue]="5">5 items per page</option>
+                <option [ngValue]="10">10 items per page</option>
+
+            </select>
+        </div>
+
+    </form>
+
+    <!-- Edit dialogue -->
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade modal-black"
+        #myModaledit="bs-modal" id="myModaledit" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center">
+                    <button aria-hidden="true" class="close" data-dismiss="modal" (click)="myModaledit.hide()"
+                        type="button">
+                        <i class="tim-icons icon-simple-remove text-white"> </i>
+                    </button>
+                    <div class="text-muted text-center ml-auto mr-auto">
+                        <h3 class="mb-0">Edit CP User</h3>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group mb-3">
+                            <label for="inputState">Login ID</label>
+                            <div class="input-group input-group-alternative"
+                                [ngClass]="{ 'input-group-focus': focus1 === true }">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="tim-icons icon-email-85"> </i>
+                                    </span>
+                                </div>
+                                <input class="form-control" placeholder="Login Id" type="text" (focus)="focus1 = true"
+                                    (blur)="focus1 = false" id="username1" name="username1"
+                                    [(ngModel)]="userCopy.username" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputState">Password</label>
+                            <div class="input-group input-group-alternative"
+                                [ngClass]="{ 'input-group-focus': focus2 === true }">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="tim-icons icon-key-25"> </i>
+                                    </span>
+                                </div>
+                                <input class="form-control" placeholder="Password" type="password"
+                                    (focus)="focus2 = true" (blur)="focus2 = false" id="password1" name="password1"
+                                    [(ngModel)]="userCopy.password" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputState">Retype Password</label>
+                            <div class="input-group input-group-alternative"
+                                [ngClass]="{ 'input-group-focus': focus3 === true }">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="tim-icons icon-key-25"> </i>
+                                    </span>
+                                </div>
+                                <input class="form-control" placeholder="Retype Password" type="password"
+                                    (focus)="focus3 = true" (blur)="focus3 = false" id="repassword1" name="repassword1"
+                                    [(ngModel)]="usercopyrepassword" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputState">Status</label>
+                            <div class="input-group input-group-alternative"
+                                [ngClass]="{ 'input-group-focus': focus4 === true }">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="tim-icons icon-key-25"> </i>
+                                    </span>
+                                </div>
+                                <select id="inputState" class="form-control" id="status1" required
+                                    [(ngModel)]="userCopy.status" name="status">
+                                    <option selected>Select Status</option>
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputState">Name</label>
+                            <div class="input-group input-group-alternative"
+                                [ngClass]="{ 'input-group-focus': focus5 === true }">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="tim-icons icon-key-25"> </i>
+                                    </span>
+                                </div>
+                                <input class="form-control" placeholder="Name" type="text" (focus)="focus5 = true"
+                                    (blur)="focus5 = false" id="firstname1" name="firstname1"
+                                    [(ngModel)]="userCopy.firstname" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputState">Contact Number</label>
+                            <div class="input-group input-group-alternative"
+                                [ngClass]="{ 'input-group-focus': focus6 === true }">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="tim-icons icon-key-25"> </i>
+                                    </span>
+                                </div>
+                                <input class="form-control" placeholder="Contact Number" type=" numaber"
+                                    (focus)="focus6 = true" (blur)="focus6 = false" id="phonenumber1"
+                                    name="phonenumber1" [(ngModel)]="userCopy.phonenumber" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputState">Email ID</label>
+                            <div class="input-group input-group-alternative"
+                                [ngClass]="{ 'input-group-focus': focus7 === true }">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="tim-icons icon-email-85"> </i>
+                                    </span>
+                                </div>
+                                <input class="form-control" placeholder="Email Id" type="email" (focus)="focus7 = true"
+                                    (blur)="focus7 = false" id="email1" name="email1" [(ngModel)]="userCopy.email" />
+                            </div>
+                        </div>
+                        <div class="form-group text-center">
+                            <button class="btn btn-primary my-4" type="button" (click)="onSave()">Save</button>
+                            <button aria-hidden="true" class="btn btn-primary my-4" data-dismiss="modal"
+                                (click)="myModaledit.hide()" type="button"> Cancel</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Info Dialog -->
+<div aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade modal-mini modal-primary modal-mini"
+    #myModalinfo="bs-modal" id="myModalinfo" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <button aria-hidden="true" class="close" data-dismiss="modal" (click)="myModalinfo.hide()"
+                    type="button">
+                    <i class="tim-icons icon-simple-remove text-white"> </i>
+                </button>
+                <div class="modal-profile">
+                    <i class="tim-icons icon-single-02"> </i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>{{myModalinform}}</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-link btn-neutral" type="button">
+
+                </button>
+                <button class="btn btn-link btn-neutral" data-dismiss="modal" type="button"
+                    (click)="myModalinfo.hide()">
+                    Close
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Dialoge -->
+<div aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade modal-mini modal-warning modal-mini"
+    #myModalconfirm="bs-modal" id="myModalconfirm" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <button aria-hidden="true" class="close" data-dismiss="modal" (click)="myModalconfirm.hide()"
+                    type="button">
+                    <i class="tim-icons icon-simple-remove text-white"> </i>
+                </button>
+                <div class="modal-profile">
+                    <i class="tim-icons icon-single-02"> </i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete user?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-link btn-neutral" type="button" (click)="onDelete()">
+                    Yes
+                </button>
+                <button class="btn btn-link btn-neutral" data-dismiss="modal" type="button"
+                    (click)="myModalconfirm.hide()">
+                    No
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>

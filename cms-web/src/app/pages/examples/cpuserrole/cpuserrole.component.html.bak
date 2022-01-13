@@ -1,0 +1,156 @@
+<div class="container my-5">
+  <div class="card card-register">
+    <div class="card-header py-0">
+      <img alt="Card image" class="card-img" src="assets/img/square1-red.png" style="width: 240px;" />
+      <span class="card-title" style="font-size: 2em;">Manage role</span>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="roleForm">
+        <div class="form-row">
+          <div class="form-group col-md-6 my-0 py-0">
+            <label for="inputState">Login Id</label>
+            <select id="inputState" class="form-control myformcontrol" id="userid" 
+            name="userid" (change)='onLoginIDSelected($event)' formControlName="userid" >
+            <div class="alert alert-danger" *ngIf="userid && userid.invalid && (userid.dirty || userid.touched)">user is required</div>
+          
+              <option *ngFor="let loginid of loginids"  [value]= "loginid.id">{{loginid.username}}</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6 my-0 py-0">
+            <label for="inputState">Content Type</label>
+            <select id="inputState" class="form-control myformcontrol" id="contenttypeid" 
+            name="contenttypeid"  formControlName="contenttypeid" >
+            <div class="alert alert-danger" *ngIf="contenttypeid && contenttypeid.invalid && (contenttypeid.dirty || contenttypeid.touched)">contenttype is required</div>
+            
+              <option *ngFor="let contenttype of contenttypes" [value]= "contenttype.id">{{contenttype.type}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6 my-0 py-0">
+            <label for="inputState">Location</label>
+            <select id="inputState" class="form-control myformcontrol"  id="locationid"
+            name="locationid" formControlName="locationid">
+            <div class="alert alert-danger" *ngIf="locationid && locationid.invalid && (locationid.dirty || locationid.touched)">location is required</div>
+           
+              <option *ngFor="let location of locations" [value]= "location.id">{{location.name}}</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6 my-0 py-0">
+            <label for="inputState">Opertion</label>
+            <select id="inputState" class="form-control myformcontrol"  id="operation" 
+            name="operation" formControlName="operation">
+            <div class="alert alert-danger" *ngIf="operation && operation.invalid && (operation.dirty || operation.touched)">operation is required</div>
+         
+              <option  *ngFor="let operation of operations">{{operation.name}}</option>
+              
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          
+          <a class="btn btn-primary btn-round" href="javascript:void(0)" (click)="onSubmit()">
+            Add
+          </a>
+          <a class="btn btn-primary btn-round" href="javascript:void(0)" (click)="setDefaultValues()">
+            Reset
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!--  -->
+         <!--  -->
+  <form>
+    <div class="form-group form-inline">
+        Full text search: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="service.searchTerm"/>
+        <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>
+    </div>
+  
+    <table class="table table-striped">
+      <thead>
+      <tr>
+    
+        <th class="text-left" scope="col" sortable="contenttype" (sort)="onSort($event)">Content Type</th>
+        <th class="text-center"scope="col" sortable="location" (sort)="onSort($event)">Location</th>
+        <th class="text-center"scope="col" sortable="operation" (sort)="onSort($event)">Operation</th>
+        <th class="text-center" scope="col" >Action</th>
+      
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let country of countries$ | async">
+       
+        <td class="text-left"><ngb-highlight [result]="country.contenttype" [term]="service.searchTerm"></ngb-highlight></td>
+        <td class="text-center"><ngb-highlight [result]="country.location" [term]="service.searchTerm"></ngb-highlight></td>
+        <td class="text-center"><ngb-highlight [result]="country.operation" [term]="service.searchTerm"></ngb-highlight></td>         
+        <td class="td-actions text-center">
+            <button type="button" rel="tooltip" class="btn btn-primary btn-sm btn-icon" (click)="onDelete(country)">
+                <i class="tim-icons icon-simple-remove"></i>
+            </button>
+        </td>
+       
+      </tr>
+      </tbody>
+    </table>
+  
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination
+        [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+      </ngb-pagination>
+  
+      <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+        <option [ngValue]="2">2 items per page</option>
+        <option [ngValue]="4">4 items per page</option>
+        <option [ngValue]="6">6 items per page</option>
+      </select>
+    </div>
+    </form>
+</div>
+<!--  -->
+<div
+    aria-hidden="true"
+    aria-labelledby="myModalLabel"
+    bsModal
+    class="modal fade modal-mini modal-primary modal-mini"
+    #myModalinfo="bs-modal"
+    id="myModalinfo"
+    role="dialog"
+    tabindex="-1"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <button
+            aria-hidden="true"
+            class="close"
+            data-dismiss="modal"
+            (click)="myModalinfo.hide()"
+            type="button"
+          >
+            <i class="tim-icons icon-simple-remove text-white"> </i>
+          </button>
+          <div class="modal-profile">
+            <i class="tim-icons icon-single-02"> </i>
+          </div>
+        </div>
+        <div class="modal-body">
+          <p>{{myModalinform}}</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-link btn-neutral" type="button">
+            Back
+          </button>
+            <button
+            class="btn btn-link btn-neutral"
+            data-dismiss="modal"
+            type="button"
+            (click)="myModalinfo.hide()"
+          >
+            Close
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,3 @@
+id,language,contenttype,location,songname,albumname,singername,songwriter,musicdirector,musiclabel,producername,publishername,description,contentlanguage,copyright,yearofrelease,copyrightfrom,copyrightto,cpcategory1,synopsistxt,lyricstxt,audiofile,preview,imagefile,thumbnailimage,cpcategory2,cpcategory3,cpcategory4,contentstatus,songid,songstatus,tonetag,starttime,endtime
+,English,RBT,Dubai,s1,a1,si1,w1,md1,ml1,p1,pn1,d1,ENGLISH,cr1,2020,1947-09-15,1947-09-15,c1,syni1.txt,lyric1.txt,song1.mp3,song2.mp3,image1.jpg,image2.jpg,c21,c31,c41,READY,cpcate4,ACTIVE,TONE1,08:14:25,11:24:25
+

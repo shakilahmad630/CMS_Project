@@ -1,0 +1,186 @@
+<div class="container my-5">
+  <div class="card card-register">
+    <div class="card-header py-0">
+      <img alt="Card image" class="card-img" src="assets/img/square1-red.png"
+        style="width: 282px; margin-left: -20px; margin-top: -207px; border-radius: 11%;" />
+      <span class="card-title" style="font-size: 2em;">Manage Category</span>
+    </div>
+    <div class="card-body">
+      <form #adduserroleform="ngForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="inputState">Category Name</label>
+            <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus1 === true }">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="tim-icons icon-email-85"> </i>
+                </span>
+              </div>
+              <input class="form-control" placeholder="Category Name" type="text" (focus)="focus1 = true"
+                (blur)="focus1 = false" id="name" required [(ngModel)]="namevalue" name="name" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <button class="btn btn-primary btn-round" href="javascript:void(0)" type="submit">
+            Add
+          </button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+  <!--  -->
+  <!--  -->
+  <form>
+    <div class="form-group form-inline">
+      Full text search: <input class="form-control ml-2" type="text" name="searchTerm"
+        [(ngModel)]="service.searchTerm" />
+      <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>
+    </div>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <!-- <th scope="col">#</th> -->
+          <th class="text-left" scope="col" sortable="id" (sort)="onSort($event)">Id</th>
+          <th class="text-center" scope="col" sortable="name" (sort)="onSort($event)">Category Name</th>
+          <th class="text-center" scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let country of categories$ | async">
+          <!-- <th scope="row">{{ country.id }}</th> -->
+          <td class="text-left">
+            <ngb-highlight [result]="country.id" [term]="service.searchTerm"></ngb-highlight>
+          </td>
+          <td class="text-center">
+            <ngb-highlight [result]="country.name" [term]="service.searchTerm"></ngb-highlight>
+          </td>
+          <!-- <td class="text-center"><ngb-highlight [result]="country.operation" [term]="service.searchTerm"></ngb-highlight></td>          -->
+          <td class="td-actions text-center">
+            <button type="button" rel="tooltip" class="btn btn-info btn-sm btn-icon" data-target="#myModaledit"
+              (click)="onEdit(country)">
+              <i class="tim-icons icon-settings-gear-63"></i>
+            </button>
+            <button type="button" rel="tooltip" class="btn btn-primary btn-sm btn-icon" (click)="showdialog(country)">
+              <i class="tim-icons icon-simple-remove"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+      </ngb-pagination>
+
+      <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+        <option [ngValue]="5">5 items per page</option>
+        <option [ngValue]="10">10 items per page</option>
+
+      </select>
+    </div>
+  </form>
+</div>
+<!--  -->
+<div aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade modal-mini modal-primary modal-mini"
+  #myModalinfo="bs-modal" id="myModalinfo" role="dialog" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <button aria-hidden="true" class="close" data-dismiss="modal" (click)="myModalinfo.hide()" type="button">
+          <i class="tim-icons icon-simple-remove text-white"> </i>
+        </button>
+        <div class="modal-profile">
+          <i class="tim-icons icon-single-02"> </i>
+        </div>
+      </div>
+      <div class="modal-body">
+        <p>{{myModalinform}}</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-link btn-neutral" type="button">
+
+        </button>
+        <button class="btn btn-link btn-neutral" data-dismiss="modal" type="button" (click)="myModalinfo.hide()">
+          Close
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Edit dialogue -->
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade modal-black" #myModaledit="bs-modal"
+  id="myModaledit" role="dialog" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <button aria-hidden="true" class="close" data-dismiss="modal" (click)="myModaledit.hide()" type="button">
+          <i class="tim-icons icon-simple-remove text-white"> </i>
+        </button>
+        <div class="text-muted text-center ml-auto mr-auto">
+          <h3 class="mb-0">Edit Category</h3>
+        </div>
+      </div>
+      <div class="modal-body">
+        <form role="form">
+          <div class="form-group mb-3">
+            <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus1 === true }">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="tim-icons icon-email-85"> </i>
+                </span>
+              </div>
+              <input class="form-control" placeholder="Category Name" type="text" (focus)="focus1 = true"
+                (blur)="focus1 = false" id="categoryname" name="categoryname" [(ngModel)]="category.name" />
+            </div>
+          </div>
+
+
+          <div class="form-group text-center">
+            <button class="btn btn-primary my-4 btn-round" type="button" (click)="onSave()">Save</button>
+            <!-- <button class="btn  btn-primary my-4" type="button"> Reset </button> -->
+            <button aria-hidden="true" class="btn btn-primary my-4 btn-round" data-dismiss="modal"
+              (click)="myModaledit.hide()" type="button"> Cancel</button>
+            <!-- <i class="tim-icons icon-simple-remove text-white"> </i> -->
+
+            <!-- <button class="btn btn-primary my-4" type="button"> Cancel </button> -->
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- confirmation dialog -->
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade modal-mini modal-warning modal-mini"
+  #myModalconfirm="bs-modal" id="myModalconfirm" role="dialog" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <button aria-hidden="true" class="close" data-dismiss="modal" (click)="myModalconfirm.hide()" type="button">
+          <i class="tim-icons icon-simple-remove text-white"> </i>
+        </button>
+        <div class="modal-profile">
+          <i class="tim-icons icon-single-02"> </i>
+        </div>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete user?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-link btn-neutral" type="button" (click)="onDelete()">
+          Yes
+        </button>
+        <button class="btn btn-link btn-neutral" data-dismiss="modal" type="button" (click)="myModalconfirm.hide()">
+          No
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+package com.vivatech.repository;
+
+import java.util.List;
+
+import com.vivatech.model.Contents;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+
+// This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
+// CRUD refers Create, Read, Update, Delete
+
+public interface ContentsRepository extends CrudRepository<Contents, Integer> {
+
+  @Query(value = "SELECT max(cpid) FROM users", nativeQuery = true)
+  String getMaxCPIDValue();
+
+  @Query(value = "SELECT a.*, b.languageid, b.locationid, b.contenttypeid, c.userid FROM contentproperties as a , contents as b, usercontents as c where a.id = b.id and c.contentid = b.id and c.userid = ?1", nativeQuery = true)
+  List<Object[]> findAllContentsforUserid(String userid);
+
+List<Contents> findById(String id);
+
+}

@@ -1,0 +1,241 @@
+<div class="container my-5">
+    <div class="card card-register">
+        <div class="card-header py-0 mb-3">
+            <img alt="Card image" class="card-img" src="assets/img/square1-red.png"
+                style="width: 300px; margin-left: -61px; margin-top: -150px; border-radius: 26%;" />
+            <span class="card-title" style="font-size: 2em;">Bulk Content</span>
+        </div>
+        <div class="card-body">
+            <div class="row ml-2">
+                <p>Please create a csv file with the meta data as shown in sample csv file.<br />
+                    Upload the csv and other files. Then click on Add button to upload.</p>
+            </div>
+            <div class="row">
+                <a class="nav-link" href="assets/BulkUpdateTemplate.csv" download="BulkUpdateSampleFormat.csv">
+                    Download Bulk Update Sample CSV File
+                </a>
+            </div>
+            <form [formGroup]="bulkForm">
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="inputState">Csv Text file</label>
+                        <div class="input-group input-group-alternative"
+                            [ngClass]="{ 'input-group-focus': focus23 === true }">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="tim-icons icon-email-85"> </i>
+                                </span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" id="inputGroupFile01" (focus)="focus23 = true"
+                                    (blur)="focus23 = false" accept=".csv" placeholder="Audio"
+                                    aria-describedby="inputGroupFileAddon01" id="csv" name="csv" required
+                                    (change)="handleFileInput($event, 7)" formControlName="csv" />
+                                <label class="custom-file-label" for="inputGroupFile01">{{csvfilelabel}}</label>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger"
+                            *ngIf="csv && csv.invalid && (csv.dirty || csv.touched)">
+                            CSV file is required
+                        </div>
+                    </div>
+                </div>
+
+                <!--seventh row end-->
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="inputState">Audio file</label>
+                        <div class="input-group input-group-alternative"
+                            [ngClass]="{ 'input-group-focus': focus24 === true }">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="tim-icons icon-email-85"> </i>
+                                </span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" id="inputGroupFile01" (focus)="focus24 = true"
+                                    (blur)="focus24 = false" accept=".mp3" placeholder="Audio"
+                                    aria-describedby="inputGroupFileAddon01" id="audio" name="audio" required
+                                    (change)="handleFileInput($event, 1)" formControlName="audio" />
+                                <label class="custom-file-label" for="inputGroupFile01">{{audiofilelabel}}</label>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger"
+                            *ngIf="audio && audio.invalid && (audio.dirty || audio.touched)">
+                            Audio file is required
+                        </div>
+                    </div>
+                </div>
+                <!--eighth row end-->
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="inputState">Preview file</label>
+                        <div class="input-group input-group-alternative"
+                            [ngClass]="{ 'input-group-focus': focus25 === true }">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="tim-icons icon-email-85"> </i>
+                                </span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" id="inputGroupFile02" (focus)="focus25 = true"
+                                    (blur)="focus25 = false" accept=".mp3" placeholder="Preview"
+                                    aria-describedby="inputGroupFileAddon01" id="preview" name="preview" required
+                                    (change)="handleFileInput($event, 2)" formControlName="preview" />
+                                <label class="custom-file-label" for="inputGroupFile02">{{previewfilelabel}}</label>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger"
+                            *ngIf="preview && preview.invalid && (preview.dirty || preview.touched)">
+                            Preview is required
+                        </div>
+                    </div>
+                </div>
+                <!--ninth row end-->
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="inputState">Image file</label>
+                        <div class="input-group input-group-alternative"
+                            [ngClass]="{ 'input-group-focus': focus26 === true }">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="tim-icons icon-email-85"> </i>
+                                </span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" id="inputGroupFile03" (focus)="focus26 = true"
+                                    (blur)="focus26 = false" accept=".jpg" placeholder="Image"
+                                    aria-describedby="inputGroupFileAddon01" id="image" name="image"
+                                    (change)="handleFileInput($event, 3)" formControlName="image" />
+                                <label class="custom-file-label" for="inputGroupFile03">{{imagefilelabel}}</label>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger"
+                            *ngIf="image && image.invalid && (image.dirty || image.touched)">
+                            Image file is required
+                        </div>
+                    </div>
+                </div>
+                <!--tenth row end-->
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="inputState">Thumbnail Image file</label>
+                        <div class="input-group input-group-alternative"
+                            [ngClass]="{ 'input-group-focus': focus27 === true }">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="tim-icons icon-email-85"> </i>
+                                </span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" id="inputGroupFile04" (focus)="focus27 = true"
+                                    (blur)="focus27 = false" accept=".jpg" placeholder="Thumbnail Image"
+                                    aria-describedby="inputGroupFileAddon01" id="thumbnailimage" name="thumbnailimage"
+                                    (change)="handleFileInput($event, 4)" formControlName="thumbnailimage" />
+                                <label class="custom-file-label"
+                                    for="inputGroupFile04">{{thumbnailimagefilelabel}}</label>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger"
+                            *ngIf="thumbnailimage && thumbnailimage.invalid && (thumbnailimage.dirty || thumbnailimage.touched)">
+                            Thumbnail Image is
+                            required</div>
+                    </div>
+                </div>
+                <!--eleventh row end-->
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="inputState">Synopsis Text file</label>
+                        <div class="input-group input-group-alternative"
+                            [ngClass]="{ 'input-group-focus': focus23 === true }">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="tim-icons icon-email-85"> </i>
+                                </span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" id="inputGroupFile05" (focus)="focus23 = true"
+                                    (blur)="focus23 = false" accept=".txt" placeholder="Synopsis"
+                                    aria-describedby="inputGroupFileAddon01" id="synopsistxt" name="synopsistxt"
+                                    (change)="handleFileInput($event, 5)" formControlName="synopsistxt" />
+                                <label class="custom-file-label" for="inputGroupFile05">{{synopsisfilelabel}}</label>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger"
+                            *ngIf="synopsistxt && synopsistxt.invalid && (synopsistxt.dirty || synopsistxt.touched)">
+                            Synopsistxt is
+                            required</div>
+                    </div>
+                </div>
+                <!--twelveth row end-->
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="inputState">Lyrics Text file</label>
+                        <div class="input-group input-group-alternative"
+                            [ngClass]="{ 'input-group-focus': focus28 === true }">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="tim-icons icon-email-85"> </i>
+                                </span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" id="inputGroupFile06" (focus)="focus28 = true"
+                                    (blur)="focus28 = false" accept=".txt" placeholder="Lyrics"
+                                    aria-describedby="inputGroupFileAddon01" id="lyricstxt" name="lyricstxt"                                     (change)="handleFileInput($event, 6)" formControlName="lyricstxt" />
+                                <label class="custom-file-label" for="inputGroupFile06">{{lyricsfilelabel}}</label>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger"
+                            *ngIf="lyricstxt && lyricstxt.invalid && (lyricstxt.dirty || lyricstxt.touched)">
+                            Lyricstxt is
+                            required</div>
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <a class="btn btn-primary btn-round" href="javascript:void(0)" routerLink="/managecontent">
+                        Back
+                    </a>
+                    <button class="btn btn-primary btn-round" type="submit" (click)="onSubmit()">Add</button>
+                    <a class="btn btn-primary btn-round" href="javascript:void(0)" (click)="clearform()">
+                        Reset
+                    </a>
+                </div>
+
+                <!-- <div class="form-group text-center">
+                        <button class="btn btn-primary"  type="button" href="javascript:void(0)" routerLink="/managecontent">Back</button>
+                        <button class="btn btn-primary" type="submit">Add</button>
+                        <button class="btn btn-primary" type="button" (click)="clearform()"> Reset </button>
+                        <!-- <button class="btn btn-primary my-4" type="button"> Cancel </button> -->
+                <!-- </div> -->
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Notification dialog-->
+<div aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade modal-mini modal-primary modal-mini"
+    #myModal1="bs-modal" id="myModal1" role="dialog" tabindex="-1" [config]="{ backdrop: 'static' }">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <button aria-hidden="true" class="close" data-dismiss="modal" (click)="myModal1.hide()" type="button">
+                    <i class="tim-icons icon-simple-remove text-white"> </i>
+                </button>
+                <div class="modal-profile">
+                    <i class="tim-icons icon-single-02"> </i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>Content added successfully</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-link btn-neutral" type="button">
+                    Back
+                </button>
+                <button class="btn btn-link btn-neutral" data-dismiss="modal" type="button" (click)="myModal1.hide()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+{
+    "recaptchaV3SiteKey" : "",
+    "service" :
+    {
+        "baseurl" : "http://52.15.124.138:9000/crbt_cms/"
+    },
+    "messages" :
+    {
+        "BadRequest" : "Bad Request",
+        "Failure" : "Some error occurred. Please try after sometime."
+
+    }
+}

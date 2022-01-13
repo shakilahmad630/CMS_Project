@@ -1,0 +1,780 @@
+<div class="container my-5 ">
+  <div class="card card-register">
+    <div class="card-header py-0">
+      <img alt="Card image" class="card-img" src="assets/img/square1-red.png"
+        style="width: 283px; margin-left: -27px; margin-top:-200px; border-radius : 14%;" />
+      <span class="card-title" style="font-size: 2em;">Manage Content</span>
+    </div>
+    <div class="card-body">
+
+      <form class="form">
+        <form>
+          <div class="form-row">
+            <div class="form-group col-md-6 my-0 py-0">
+              <label for="inputState">Meta-Data Language</label>
+              <select id="inputState" class="form-control myformcontrol" id="language" name="language" required
+                [(ngModel)]="service.searchContent.languageid">
+                <option *ngFor="let language of metadatalanguages" [value]="language.id">{{language.language}}</option>
+
+              </select>
+            </div>
+            <div class="form-group col-md-6 my-0 py-0">
+              <label for="inputState">Content Type</label>
+              <select id="inputState" class="form-control  myformcontrol" id="contenttype" name="contenttype" required
+                [(ngModel)]="service.searchContent.contenttypeid">
+                <option *ngFor="let contenttype of contenttypes" [value]="contenttype.id">{{contenttype.type}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6  my-0 py-0">
+              <label for="inputState">CP User</label>
+              <select id="inputState" class="form-control  myformcontrol" id="username" name="username" required
+                [(ngModel)]="service.searchContent.userid">
+                <option *ngFor="let cpuser of cpusers" [value]="cpuser.id">{{cpuser.username}}</option>
+              </select>
+            </div>
+            <div class="form-group col-md-6 my-0 py-0">
+              <label for="inputState">Content Status</label>
+              <select id="inputState" class="form-control  myformcontrol" id="contentstatus" name="contentstatus"
+                required [(ngModel)]="service.searchContent.contentstatus">
+                <option *ngFor="let con of contentstatuslist">{{con.status}}</option>>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <button class="btn btn-primary btn-round" type="button" (click)="onSearch()">Search</button>
+            <a class="btn btn-primary btn-round mx-1" href="javascript:void(0)" routerLink="/add">
+              Add Content
+            </a>
+            <a class="btn btn-primary btn-round" href="javascript:void(0)" routerLink="/managebulkcontent">
+              Add Bulk Content
+            </a>
+          </div>
+        </form>
+      </form>
+    </div>
+  </div>
+
+  <form>
+    <div class="form-group form-inline">
+      Full text search: <input class="form-control ml-2" type="text" name="searchTerm"
+        [(ngModel)]="service.searchTerm" />
+      <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>
+    </div>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <!-- <th scope="col">#</th> -->
+          <!-- <th scope="col" sortable="id" (sort)="onSort($event)"> ID</th> -->
+          <th scope="col" sortable="Contentstatus" (sort)="onSort($event)">Content Status</th>
+          <th scope="col" sortable="Songid" (sort)="onSort($event)">Song Id</th>
+          <th scope="col" sortable="Songstatus" (sort)="onSort($event)">Song Status</th>
+          <th scope="col" sortable="Songname" (sort)="onSort($event)">Song Name</th>
+          <th scope="col" sortable="Album" (sort)="onSort($event)">Album</th>
+          <th scope="col" sortable="Singername" (sort)="onSort($event)">Singer Name</th>
+          <th scope="col" sortable="Contentlanguage" (sort)="onSort($event)">Content Language</th>
+          <th scope="col" sortable="Tonetag" (sort)="onSort($event)">Tone Tag</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let content of contents$ | async">
+          <!-- <th scope="row">{{ content.id }}</th> -->
+          <!-- <td><ngb-highlight [result]="content.id" [term]="service.searchTerm"></ngb-highlight></td> -->
+          <td>
+            <ngb-highlight [result]="content.Contentstatus" [term]="service.searchTerm"></ngb-highlight>
+          </td>
+          <td>
+            <ngb-highlight [result]="content.Songid" [term]="service.searchTerm"></ngb-highlight>
+          </td>
+          <td>
+            <ngb-highlight [result]="content.Songstatus" [term]="service.searchTerm"></ngb-highlight>
+          </td>
+          <td>
+            <ngb-highlight [result]="content.Songname" [term]="service.searchTerm"></ngb-highlight>
+          </td>
+          <td>
+            <ngb-highlight [result]="content.Album" [term]="service.searchTerm"></ngb-highlight>
+          </td>
+          <td>
+            <ngb-highlight [result]="content.Singername" [term]="service.searchTerm"></ngb-highlight>
+          </td>
+          <td>
+            <ngb-highlight [result]="content.Contentlanguage" [term]="service.searchTerm"></ngb-highlight>
+          </td>
+          <td>
+            <ngb-highlight [result]="content.Tonetag" [term]="service.searchTerm"></ngb-highlight>
+          </td>
+          <td class="td-actions text-center">
+            <button type="button" rel="tooltip" class="btn btn-info btn-sm btn-icon" data-target="#myModaledit"
+              (click)="onEdit(content)">
+              <i class="tim-icons icon-settings-gear-63"></i>
+            </button>
+
+            <button type="button" rel="tooltip" class="btn btn-primary btn-sm btn-icon" (click)="showdialog(content)">
+              <i class="tim-icons icon-simple-remove"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+      </ngb-pagination>
+
+      <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+        <option [ngValue]="5">5 items per page</option>
+        <option [ngValue]="10">10 items per page</option>
+
+      </select>
+    </div>
+
+  </form>
+</div>
+
+
+
+<!-- Edit dialogue -->
+<div class="container my-5">
+  <!-- <div class="card card-register"> -->
+  <div aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade modal-black" #myModaledit="bs-modal"
+    id="myModaledit" role="dialog" tabindex="-1">
+    <div class="modal-dialog" style="min-width: 800px;">
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <button aria-hidden="true" class="close" data-dismiss="modal" (click)="myModaledit.hide()" type="button">
+            <i class="tim-icons icon-simple-remove text-white"> </i>
+          </button>
+          <div class="text-muted text-center ml-auto mr-auto">
+            <h3 class="mb-0">Edit Content</h3>
+          </div>
+        </div>
+        <div class="modal-body text-left">
+          <form role="form" [formGroup]="contentForm">
+            <div class="form-row">
+              <div class="form-group mb-3 col-4">
+                <label for="inputState">MetaData Language </label>
+                <select id="inputState" class="form-control" id="language" name="language" formControlName="languageid">
+                  <option *ngFor="let lang of metadatalanguages" [value]="lang.id">{{lang.language}}</option>>
+                </select>
+                <div class="alert alert-danger"
+                  *ngIf="languageid && languageid.invalid && (languageid.dirty || languageid.touched)">Language is
+                  required</div>
+              </div>
+              <div class="form-group mb-3 col-4">
+                <label for="inputState">Content Type </label>
+                <select id="inputState" class="form-control" id="contenttypeid" name="contenttypeid" formControlName = "contenttypeid"
+                   (change)="onEditContenttype()">
+                  <option *ngFor="let cont of contenttypes" [value]="cont.id">{{cont.type}}</option>
+                </select>
+                <div class="alert alert-danger"
+                  *ngIf="contenttypeid && contenttypeid.invalid && (contenttypeid.dirty || contenttypeid.touched)">
+                  Content Type is
+                  required</div>
+              </div>
+              <div class="form-group mb-3 col-4">
+                <label for="inputState">Content Status </label>
+                <select id="inputState" class="form-control" id="contentstatus" name="contentstatus"
+                  formControlName="contentstatus">
+                  <option *ngFor="let con of editcontentstatus" [value]="con.id">{{con.status}}</option>>
+                </select>
+                <div class="alert alert-danger"
+                  *ngIf="contentstatus && contentstatus.invalid && (contentstatus.dirty || contentstatus.touched)">
+                  Content Status is
+                  required</div>
+              </div>
+            </div>
+            <!--first row end-->
+            <div class="form-row">
+              <div class="form-group mb-3 col-4">
+                <label for="inputState">Location </label>
+                <select id="inputState" class="form-control" id="location" name="location" formControlName="locationid">
+                  <option *ngFor="let loc of locations" [value]="loc.id">{{loc.name}}</option>>
+                </select>
+                <div class="alert alert-danger"
+                  *ngIf="locationid && locationid.invalid && (locationid.dirty || locationid.touched)">Location is
+                  required</div>
+              </div>
+              <div class="form-group mb-3 col-4">
+                <label for="inputState">Content Language </label>
+                <select id="inputState" class="form-control" id="contentlanguage" name="contentlanguage"
+                  formControlName="contentlanguage">
+                  <option *ngFor="let col of contentlanguages" [value]="col.id">{{col.language}}</option>>
+                </select>
+                <div class="alert alert-danger"
+                  *ngIf="contentlanguage && contentlanguage.invalid && (contentlanguage.dirty || contentlanguage.touched)">
+                  Content Language is
+                  required</div>
+              </div>
+              <div class="form-group mb-3 col-4">
+                <label for="inputState">Song Status </label>
+                <select id="inputState" class="form-control" id="songstatus" name="songstatus"
+                  formControlName="songstatus">
+                  <option *ngFor="let sos of songstatuslist" [value]="sos.id">{{sos.status}}</option>>
+                </select>
+                <div class="alert alert-danger"
+                  *ngIf="songstatus && songstatus.invalid && (songstatus.dirty || songstatus.touched)">Song Status is
+                  required</div>
+              </div>
+
+            </div>
+            <!--  -->
+            <!--  -->
+            <!--  -->
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="inputState">Song Name </label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus4 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-key-25"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="Song Name" type="text" (focus)="focus4 = true"
+                    (blur)="focus4 = false" id="songname" name="songname" formControlName="songname" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="songname && songname.invalid && (songname.dirty || songname.touched)">Song Name is
+                  required</div>
+              </div>
+              <div class="form-group col">
+                <label for="inputState">Album Name </label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus5 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-key-25"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="Album Name" type="text" (focus)="focus5 = true"
+                    (blur)="focus5 = false" id="albumname" name="albumname" formControlName="albumname" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="albumname && albumname.invalid && (albumname.dirty || albumname.touched)">Album Name is
+                  required</div>
+              </div>
+              <div class="form-group col">
+                <label for="inputState">Singer Name </label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus6 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-key-25"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="Singer Name" type="text" (focus)="focus6 = true"
+                    (blur)="focus6 = false" id="singername" name="singername" formControlName="singername" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="singername && singername.invalid && (singername.dirty || singername.touched)">Singer Name is
+                  required</div>
+              </div>
+            </div>
+            <!--second row end-->
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="inputState">Song Writer </label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus7 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="Song Writer" type="text" (focus)="focus7 = true"
+                    (blur)="focus7 = false" id="songwriter" name="songwriter" formControlName="songwriter" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="songwriter && songwriter.invalid && (songwriter.dirty || songwriter.touched)">Song Writer is
+                  required</div>
+
+              </div>
+
+              <div class="form-group col">
+                <label for="inputState">Music Director </label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus9 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="Music Director" type="text" (focus)="focus9 = true"
+                    (blur)="focus9 = false" id="musicdirector" name="musicdirector" formControlName="musicdirector" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="musicdirector && musicdirector.invalid && (musicdirector.dirty || musicdirector.touched)">Music
+                  Director is
+                  required</div>
+
+              </div>
+              <div class="form-group col">
+                <label for="inputState">Music Label </label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus10 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="Music Label" type="text" (focus)="focus10 = true"
+                    (blur)="focus10 = false" id="musiclabel" name="musiclabel" formControlName="musiclabel" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="musiclabel && musiclabel.invalid && (musiclabel.dirty || musiclabel.touched)">Music Label is
+                  required</div>
+
+              </div>
+            </div>
+            <!--third row end-->
+            <div class="form-row">
+
+              <div class="form-group col">
+                <label for="inputState">Producer Name </label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus11 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="Producer Name" type="text" (focus)="focus11 = true"
+                    (blur)="focus11 = false" id="producername" name="producername" formControlName="producername" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="producername && producername.invalid && (producername.dirty || producername.touched)">Producer
+                  Name is
+                  required</div>
+
+              </div>
+              <div class="form-group col">
+                <label for="inputState">Publisher Name </label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus12 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="Publisher Name" type="text" (focus)="focus12 = true"
+                    (blur)="focus12 = false" id="publishername" name="publishername" formControlName="publishername" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="publishername && publishername.invalid && (publishername.dirty || publishername.touched)">
+                  Publisher Name is
+                  required</div>
+
+              </div>
+              <div class="form-group col">
+                <label for="inputState">Description</label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus13 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="Description" type="text" (focus)="focus13 = true"
+                    (blur)="focus13 = false" id="description" name="description" formControlName="description" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="description && description.invalid && (description.dirty || description.touched)">Description
+                  is
+                  required</div>
+
+              </div>
+            </div>
+            <!--fourth row end-->
+
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="inputState">Year of Release</label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus16 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="Year of Release" type="text" (focus)="focus16 = true"
+                    (blur)="focus16 = false" id="yearofrelease" name="yearofrelease" formControlName="yearofrelease"
+                    bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'YYYY', isAnimated: true, containerClass: 'theme-red' }" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="yearofrelease && yearofrelease.invalid && (yearofrelease.dirty || yearofrelease.touched)">Year
+                  of Release is
+                  required</div>
+
+              </div>
+              <div class="form-group col">
+                <label for="inputState">Copyright</label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus15 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="Copyright" type="text" (focus)="focus15 = true"
+                    (blur)="focus15 = false" id="copyright" name="copyright" formControlName="copyright" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="copyright && copyright.invalid && (copyright.dirty || copyright.touched)">Copyright is
+                  required</div>
+
+              </div>
+              <div class="form-group col">
+                <label for="inputState">Radio Start Date/Copyright From</label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus17 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="Copyright From" type="text" (focus)="focus17 = true"
+                    (blur)="focus17 = false" id="copyrightfrom" name="copyrightfrom" formControlName="copyrightfrom"
+                    bsDatepicker [bsConfig]="{ isAnimated: true, containerClass: 'theme-red' }" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="copyrightfrom && copyrightfrom.invalid && (copyrightfrom.dirty || copyrightfrom.touched)">
+                  Copyright From is
+                  required</div>
+
+              </div>
+              <div class="form-group col">
+                <label for="inputState">Radio End Date/Copyright To</label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus18 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="Copyright To" type="text" (focus)="focus18 = true"
+                    (blur)="focus18 = false" id="copyrightto" name="copyrightto" formControlName="copyrightto"
+                    bsDatepicker [bsConfig]="{ isAnimated: true, containerClass: 'theme-red' }" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="copyrightto && copyrightto.invalid && (copyrightto.dirty || copyrightto.touched)">Copyright To
+                  is
+                  required</div>
+
+              </div>
+            </div>
+            <!--sixth row end-->
+            <!-- two column -->
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="inputState">CP Category1</label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus19 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="CP Category1" type="text" (focus)="focus19 = true"
+                    (blur)="focus19 = false" id="cpcategory1" name="cpcategory1" formControlName="cpcategory1" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="cpcategory1 && cpcategory1.invalid && (cpcategory1.dirty || cpcategory1.touched)">Cpcategory1
+                  is
+                  required</div>
+
+              </div>
+              <div class="form-group col">
+                <label for="inputState">CP Category2</label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus20 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="CP Category2" type="text" (focus)="focus20 = true"
+                    (blur)="focus20 = false" id="cpcategory2" name="cpcategory2" formControlName="cpcategory2" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="cpcategory2 && cpcategory2.invalid && (cpcategory2.dirty || cpcategory2.touched)">Cpcategory2
+                  is
+                  required</div>
+
+              </div>
+              <div class="form-group col">
+                <label for="inputState">CP Category3</label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus21 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="CP Category3" type="text" (focus)="focus21 = true"
+                    (blur)="focus21 = false" id="cpcategory3" name="cpcategory3" formControlName="cpcategory3" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="cpcategory3 && cpcategory3.invalid && (cpcategory3.dirty || cpcategory3.touched)">Cpcategory3
+                  is
+                  required</div>
+
+              </div>
+              <div class="form-group col">
+                <label for="inputState">CP Category4</label>
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus22 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="tim-icons icon-email-85"> </i>
+                    </span>
+                  </div>
+                  <input class="form-control" placeholder="CP Category4" type="text" (focus)="focus22 = true"
+                    (blur)="focus22 = false" id="cpcategory4" name="cpcategory4" formControlName="cpcategory4" />
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="cpcategory4 && cpcategory4.invalid && (cpcategory4.dirty || cpcategory4.touched)">Cpcategory4
+                  is
+                  required</div>
+
+              </div>
+            </div>
+            <div class="form-row">
+
+              <div class="form-group col">
+                <label for="inputState">Start Time</label>
+                <ngb-timepicker id="starttime" name="starttime" formControlName="starttime"></ngb-timepicker>
+                <!-- <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus31 === true }">
+                <div class="input-group-prepend"> -->
+                  <!-- <span class="input-group-text">
+                    <i class="tim-icons icon-email-85"> </i>
+                  </span> -->
+                <!-- </div>
+                <input class="form-control" placeholder="Start Time" type="time" (focus)="focus31 = true"
+                  (blur)="focus31 = false" id="starttime" name="starttime" formControlName="starttime" 
+                />
+              </div> -->
+                <div class="alert alert-danger"
+                  *ngIf="starttime && starttime.invalid && (starttime.dirty || starttime.touched)">
+                  Start Time is required</div>
+              </div>
+              <div class="form-group col">
+                <label for="inputState">End Time</label>
+                <ngb-timepicker id="endtime" name="endtime" formControlName="endtime"></ngb-timepicker>
+                <!-- <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus32 === true }">
+                <div class="input-group-prepend">
+                   <span class="input-group-text">
+                    <i class="tim-icons icon-email-85"></i>
+                  </span>
+                </div>
+                <input class="form-control" placeholder="End Time" type="time" (focus)="focus32 = true"
+                  (blur)="focus32 = false" id="endtime" name="endtime" formControlName="endtime"/>                
+              </div> -->
+                <div class="alert alert-danger"
+                  *ngIf="endtime && endtime.invalid && (endtime.dirty || endtime.touched)">End Time is required</div>
+              </div>
+            </div>
+            <!--seventh row end-->
+
+            <div class="form-row">
+              <div class="form-group col-6">
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus24 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <!-- <i class="tim-icons icon-email-85"> </i> -->
+                      <a class="tim-icons icon-cloud-download-93" href={{audiofilelabel}} download="audio.mp3">
+                      </a>
+                    </span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" id="inputGroupFile01" (focus)="focus24 = true" (blur)="focus24 = false"
+                      accept=".mp3" placeholder="Audio" aria-describedby="inputGroupFileAddon01" id="audiofile"
+                      name="audiofile" required (change)="handleFileInput($event, 1)" formControlName="audiofile" />
+                    <label class="custom-file-label text-left" for="inputGroupFile01">Audio File</label>
+                  </div>
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="audiofile && audiofile.invalid && (audiofile.dirty || audiofile.touched)">
+                  Audio file is required</div>
+              </div>
+
+              <div class="form-group col-6">
+                <audio controls class="form-group col-12" src="{{audiofilelabel}}" crossorigin="anonymous">
+                </audio>
+              </div>
+
+              <!--eighth row end-->
+
+              <div class="form-group col-6">
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus25 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <a class="tim-icons icon-cloud-download-93" href={{previewfilelabel}} download="preview.mp3">
+                      </a>
+                    </span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" id="inputGroupFile01" (focus)="focus25 = true" (blur)="focus25 = false"
+                      accept=".mp3" placeholder="Preview" aria-describedby="inputGroupFileAddon01" id="preview"
+                      name="preview" required (change)="handleFileInput($event, 2)" formControlName="preview" />
+                    <label class="custom-file-label text-left" for="inputGroupFile02">Preview File</label>
+                  </div>
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="preview && preview.invalid && (preview.dirty || preview.touched)">
+                  Preview file is required</div>
+              </div>
+              <div class="form-group col-6">
+                <audio controls class="form-group col-12" src="{{previewfilelabel}}" crossorigin="anonymous">
+                </audio>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus26 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <a class="tim-icons icon-cloud-download-93" href={{imagefilelabel}} download="image.jpg">
+                      </a>
+                      <!-- <i class="tim-icons icon-cloud-download-93"> </i> -->
+                    </span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" id="inputGroupFile01" (focus)="focus26 = true" (blur)="focus26 = false"
+                      accept=".jpg" placeholder="Image" aria-describedby="inputGroupFileAddon01" id="imagefile"
+                      name="imagefile" required (change)="handleFileInput($event, 3)" formControlName="imagefile" />
+                    <label class="custom-file-label text-left" for="inputGroupFile03">Image File</label>
+                  </div>
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="imagefile && imagefile.invalid && (imagefile.dirty || imagefile.touched)">
+                  Image file is required</div>
+              </div>
+
+              <!--ninth row end-->
+
+              <div class="form-group col-6">
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus27 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <a class="tim-icons icon-cloud-download-93" href={{thumbnailimagefilelabel}}
+                        download="thumbnailimage.jpg">
+                      </a>
+                      <!-- <i class="tim-icons icon-cloud-download-93"> </i> -->
+                    </span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" id="inputGroupFile01" (focus)="focus27 = true" (blur)="focus27 = false"
+                      accept=".jpg" placeholder="Thumbnail Image" aria-describedby="inputGroupFileAddon01"
+                      id="thumbnailimage" name="thumbnailimage" required (change)="handleFileInput($event, 4)"
+                      formControlName="thumbnailimage" />
+                    <label class="custom-file-label text-left" for="inputGroupFile04">Thumbnailimage File</label>
+                  </div>
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="thumbnailimage && thumbnailimage.invalid && (thumbnailimage.dirty || thumbnailimage.touched)">
+                  Thumbnail Image file is required</div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus23 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <!-- <i class="tim-icons icon-cloud-download-93"> </i> -->
+                      <a class="tim-icons icon-cloud-download-93" href={{synopsisfilelabel}} download="synopsis.txt">
+                      </a>
+                    </span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" id="inputGroupFile01" (focus)="focus23 = true" (blur)="focus23 = false"
+                      accept=".txt" placeholder="Synopsis" aria-describedby="inputGroupFileAddon01" id="synopsistxt"
+                      name="synopsistxt" required (change)="handleFileInput($event, 5)" formControlName="synopsistxt" />
+                    <label class="custom-file-label text-left" for="inputGroupFile05">Synopsis File</label>
+                  </div>
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="synopsistxt && synopsistxt.invalid && (synopsistxt.dirty || synopsistxt.touched)">
+                  Synopsis file is required</div>
+              </div>
+              <div class="form-group col-6">
+                <div class="input-group input-group-alternative" [ngClass]="{ 'input-group-focus': focus28 === true }">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <a class="tim-icons icon-cloud-download-93" href={{lyricsfilelabel}} download="lyrics.txt">
+                      </a>
+                      <!-- <i class="tim-icons icon-cloud-download-93"> </i> -->
+                    </span>
+                  </div>
+                  <div class="custom-file">
+                    <input type="file" id="inputGroupFile01" (focus)="focus28 = true" (blur)="focus28 = false"
+                      accept=".txt" placeholder="Lyrics" aria-describedby="inputGroupFileAddon01" id="lyricstxt"
+                      name="lyricstxt" required (change)="handleFileInput($event, 6)" formControlName="lyricstxt" />
+                    <label class="custom-file-label text-left" for="inputGroupFile06">Lyrics File</label>
+                  </div>
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="lyricstxt && lyricstxt.invalid && (lyricstxt.dirty || lyricstxt.touched)">
+                  Lyrics file is required</div>
+              </div>
+            </div>
+
+            <div class="form-group text-center">
+              <button class="btn btn-primary my-4 btn-round" type="button" (click)="onSave()">Save</button>
+              <!-- <button class="btn btn-primary my-4" type="button"> Reset </button> -->
+              <button class="btn btn-primary my-4 btn-round" type="button" (click)="myModaledit.hide()"> Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
+</div>
+
+
+<!-- notification dailog -->
+<div aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade modal-mini modal-primary modal-mini"
+  #myModalinfo="bs-modal" id="myModalinfo" role="dialog" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <button aria-hidden="true" class="close" data-dismiss="modal" (click)="myModalinfo.hide()" type="button">
+          <i class="tim-icons icon-simple-remove text-white"> </i>
+        </button>
+        <div class="modal-profile">
+          <i class="tim-icons icon-single-02"> </i>
+        </div>
+      </div>
+      <div class="modal-body">
+        <p>{{myModalinfomesg}}</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-link btn-neutral" type="button">
+
+        </button>
+        <button class="btn btn-link btn-neutral" data-dismiss="modal" type="button" (click)="myModalinfo.hide()">
+          Close
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  Confirmation Dialog -->
+<div aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade modal-mini modal-warning modal-mini"
+  #myModalconfirm="bs-modal" id="myModalconfirm" role="dialog" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header justify-content-center">
+        <button aria-hidden="true" class="close" data-dismiss="modal" (click)="myModalconfirm.hide()" type="button">
+          <i class="tim-icons icon-simple-remove text-white"> </i>
+        </button>
+        <div class="modal-profile">
+          <i class="tim-icons icon-single-02"> </i>
+        </div>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete user?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-link btn-neutral" type="button" (click)="onDelete()">
+          Yes
+        </button>
+        <button class="btn btn-link btn-neutral" data-dismiss="modal" type="button" (click)="myModalconfirm.hide()">
+          No
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>

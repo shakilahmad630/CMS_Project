@@ -1,0 +1,29 @@
+package com.vivatech.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity // This tells Hibernate to make a table out of this class
+public class Usercontents {
+	@Id
+	private String userid;
+
+	private String contentid;
+
+	public String getUserid() {
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+
+	public String getContentid() {
+		return contentid;
+	}
+
+	public void setContentid(String contentid) {
+		this.contentid = contentid;
+	}
+
+}
